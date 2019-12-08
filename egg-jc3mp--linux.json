@@ -1,0 +1,54 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v1"
+    },
+    "exported_at": "2019-12-08T22:32:56+08:00",
+    "name": "JC3MP-Linux",
+    "author": "service@hcgcloud.com",
+    "description": "Just Cause 3 Multiplayer Linux",
+    "image": "hcgcloud\/pterodactyl-jc3mp:latest",
+    "startup": ".\/Server",
+    "config": {
+        "files": "{\r\n    \"config.json\": {\r\n        \"parser\": \"json\",\r\n        \"find\": {\r\n            \"bind\": \"0.0.0.0\",\r\n            \"port\": \"{{server.build.default.port}}\",\r\n            \"queryPort\": \"{{server.build.env.QUERY_PORT}}\",\r\n            \"httpPort\": \"{{server.build.env.HTTP_PORT}}\"\r\n        }\r\n    }\r\n}",
+        "startup": "{\r\n    \"done\": \"Server successfully started up\",\r\n    \"userInteraction\": []\r\n}",
+        "logs": "{\r\n    \"custom\": true,\r\n    \"location\": \"latest.log\"\r\n}",
+        "stop": "exit"
+    },
+    "scripts": {
+        "installation": {
+            "script": "apt update\r\napt -y --no-install-recommends install curl unzip lib32gcc1 ca-certificates\r\n\r\ncd \/tmp\r\ncurl -sSL -o steamcmd.tar.gz http:\/\/media.steampowered.com\/installer\/steamcmd_linux.tar.gz\r\n\r\nmkdir -p \/mnt\/server\/steamcmd\r\ntar -xzvf steamcmd.tar.gz -C \/mnt\/server\/steamcmd\r\ncd \/mnt\/server\/steamcmd\r\n\r\nexport HOME=\/mnt\/server\r\n.\/steamcmd.sh +login anonymous +force_install_dir \/mnt\/server +app_update 619960 +quit\r\n\r\nif [ ! -d 'packages' ]; then\r\n  cd \/mht\/server\r\n  curl -SL -o default_packages.zip https:\/\/raw.githubusercontent.com\/hcgcloud\/pterodactyl-jc3mp\/master\/default-package.zip\r\n  unzip -o -d \/mnt\/server\/ default_packages.zip\r\n  rm -f \/mht\/server\/default_packages.zip\r\nfi\r\n\r\nchown -R root:root \/mnt\r\n\r\nmkdir -p \/mnt\/server\/.steam\/sdk32\r\ncp -v linux32\/steamclient.so ..\/.steam\/sdk32\/steamclient.so",
+            "container": "ubuntu:16.04",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Server Auto Update",
+            "description": "Input 1 to enable or 0 to disable",
+            "env_variable": "SERVER_AUTOUPDATE",
+            "default_value": "1",
+            "user_viewable": 1,
+            "user_editable": 1,
+            "rules": "required|integer|between:0,1"
+        },
+        {
+            "name": "QUERY_PORT",
+            "description": "",
+            "env_variable": "QUERY_PORT",
+            "default_value": "",
+            "user_viewable": 1,
+            "user_editable": 0,
+            "rules": "required|integer|between:1,65535"
+        },
+        {
+            "name": "HTTP_PORT",
+            "description": "",
+            "env_variable": "HTTP_PORT",
+            "default_value": "",
+            "user_viewable": 1,
+            "user_editable": 0,
+            "rules": "required|integer|between:1,65535"
+        }
+    ]
+}
