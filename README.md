@@ -11,4 +11,6 @@ Pterodactyl eggs - Just Cause 3 Multiplayer
 ## How to use
 Just simply import `egg-jc3mp--linux.json` to your panel and then you can create a server.
 
+Also be noticed that you should additionally allocate `2 ports` and set them in variables for `query` and `http server`.
+
 **By default, the newly installed server does not contain any package, we additionally packed a zip file containing some default packages for installation, you can also find them from [here](https://gitlab.nanos.io/jc3mp-packages)**
