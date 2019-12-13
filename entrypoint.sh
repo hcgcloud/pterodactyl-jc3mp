@@ -5,7 +5,7 @@ cd /home/container
 
 # Update Server
 if [ "${SERVER_AUTOUPDATE}" == "1" ]; then
-    ./steam/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update 619960 +quit
+    ./steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update 619960 +quit
 fi
 
 # Replace Startup Variables
